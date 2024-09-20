@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" type="text/css" href="./main.css">
+        <title>Memory Match</title>
+
+        <style>
+            .grid-container {
+                display: grid;
+                grid-template-columns: auto auto auto auto auto;
+                gap: 10px;
+                background-color: lightslategray;
+                padding: 10px;
+                margin-left: 200px;
+                margin-right: 200px;
+            }
+
+            .grid-container > div {
+                background-color: rgb(191, 73, 73);
+                border-radius: 5px;
+                text-align: center;
+                padding: 70px;
+                font-size: 30px;
+                cursor: pointer;
+            }
+
+            img {
+                width: 50px;
+                height: 50px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Welcome to Memory Match</h1>
+        <a href="./index.html"><p>Go Back</p></a>
+
+        <button onclick="randomiseLocations()">Randomise Spots</button>
+        <p id="tab"></p>
+        <p id="counter"></p>
+
+        <script>
+            var counter = 0;
+            var tab = [];
+            var clickedSquares = [];
+            var clickedImages = [];
+
+            function randomiseLocations() {
+                tab = [];
+                var initialNum = Math.floor(Math.random() * 10) + 1;
+                tab.push(initialNum);
+ 
+                while (tab.length < 10) {
+                    var randomNum = Math.floor(Math.random() * 10) + 1;
+                    if (!tab.some((num) => num == randomNum)) {
+                        tab.push(randomNum);
+                    }
+                }
+
+                document.getElementById("tab").innerText = tab;
+                document.getElementById("counter").innerText = counter;
+
+                for (let i = 1; i <= 10; i++) {
+                    document.getElementById(i).innerHTML = '';
+                }
+
+                clickedSquares = [];
+                clickedImages = [];
+                counter = 0;
+            }
+
+            function checkImage(passedId) {
+                if (clickedSquares.length == 2) {
+                    if (clickedImages[0] !== clickedImages[1]) {
+                        document.getElementById(clickedSquares[0]).innerHTML = '';
+                        document.getElementById(clickedSquares[1]).innerHTML = '';
+                    }
+                    clickedSquares = [];
+                    clickedImages = [];
+                }
+
+                var imageSrc;
+                if (passedId == tab[0] || passedId == tab[1]) {
+                    imageSrc = './Images/Apple.png';
+                } else if (passedId == tab[2] || passedId == tab[3]) {
+                    imageSrc = './Images/Orange.png';
+                } else if (passedId == tab[4] || passedId == tab[5]) {
+                    imageSrc = './Images/Banana.png';
+                } else if (passedId == tab[6] || passedId == tab[7]) {
+                    imageSrc = './Images/Watermelon.png';
+                } else if (passedId == tab[8] || passedId == tab[9]) {
+                    imageSrc = './Images/Cherry.png';
+                }
+
+                document.getElementById(passedId).innerHTML = `<img src="${imageSrc}">`;
+
+                clickedSquares.push(passedId);
+                clickedImages.push(imageSrc);
+
+                counter += 1;
+                document.getElementById("counter").innerText = counter;
+
+                if (clickedSquares.length == 2) {
+                    setTimeout(() => {
+                        if (clickedImages[0] !== clickedImages[1]) {
+                            document.getElementById(clickedSquares[0]).innerHTML = '';
+                            document.getElementById(clickedSquares[1]).innerHTML = '';
+                        }
+
+                        clickedSquares = [];
+                        clickedImages = [];
+                    }, 400);
+                }
+            }
+        </script>
+
+        <div class="grid-container">
+            <div id="1" onclick="checkImage(this.id)"></div>
+            <div id="2" onclick="checkImage(this.id)"></div>
+            <div id="3" onclick="checkImage(this.id)"></div>  
+            <div id="4" onclick="checkImage(this.id)"></div>
+            <div id="5" onclick="checkImage(this.id)"></div>
+            <div id="6" onclick="checkImage(this.id)"></div>  
+            <div id="7" onclick="checkImage(this.id)"></div>
+            <div id="8" onclick="checkImage(this.id)"></div>
+            <div id="9" onclick="checkImage(this.id)"></div>
+            <div id="10" onclick="checkImage(this.id)"></div>
+        </div>
+
+    </body>
+</html>
